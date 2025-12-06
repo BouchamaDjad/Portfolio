@@ -1,4 +1,5 @@
 import {useState, useEffect} from "react";
+import Image from "next/image";
 
 export default function Home() {
     const [activeSection, setActiveSection] = useState('home');
@@ -16,6 +17,19 @@ export default function Home() {
         document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
         setActiveSection(sectionId);
     };
+    
+    const projectTypes = {
+        "internship": 'bg-green-100 text-green-800',
+        'academic': 'bg-blue-100 text-blue-800',
+        'personal': 'bg-purple-100 text-purple-800'
+    };
+
+    const getProjectTypeColor = (type) => {
+        if (projectTypes.hasOwnProperty(type))
+            return projectTypes[type];
+        
+        return 'bg-purple-100 text-purple-800';
+    }
 
     const skills = {
         languages: ['Java', 'Python', 'JavaScript', 'SQL', 'HTML/CSS', 'PHP', 'Go', 'Rust', 'C', 'Assembly'],
@@ -32,7 +46,9 @@ export default function Home() {
             company: "NYUAD (Remote)",
             tech: ["Python", "PyTorch", "C++", "Deep RL"],
             description: "Developed deep reinforcement learning system for automatic code optimization in MLIR compiler, integrated as Matlab backend. Used LSTM encoding for variable-size program processing.",
-            type: "internship"
+            type: "internship",
+            tags:['Master PFE'],
+            screenshot:''
         },
         {
             title: "Text Generation from Scene Graphs",
@@ -40,35 +56,41 @@ export default function Home() {
             company: "USTHB - Bachelor's Final Project",
             tech: ["Python", "TensorFlow", "NetworkX", "Django"],
             description: "Built grammar-based and neural network models for generating textual descriptions from scene graph representations. Implemented GCN coupled with pre-trained transformer.",
-            type: "academic"
+            type: "academic",
+            tags: ['Bachelor PFE'],
+            screenshot:''
         },
         {
             title: "Climate & Soil Analysis for Tizi-Ouzou",
             period: "Oct 2024 – Jan 2025",
             tech: ["Python", "NumPy", "Pandas", "Scikit-learn", "Matplotlib"],
             description: "Complete data mining application for climate analysis. Features interactive GUI, statistical analysis, data preprocessing, regression models, and clustering algorithms (CLARANS, DBSCAN).",
-            type: "personal"
+            type: "academic",
+            screenshot:'Climat & soil.png'
         },
         {
             title: "Multiple Knapsack Problem Optimization",
             period: "Mar 2024 – Apr 2024",
             tech: ["Java", "JavaFX"],
             description: "Solved NP-hard multiple knapsack problem using exact algorithms (BFS, DFS, A*) and meta-heuristics (Genetic Algorithm, Bee Swarm Optimization). Built simulation interface.",
-            type: "academic"
+            type: "academic",
+            screenshot:'MKP.png'
         },
         {
             title: "Maktabati - E-Commerce Bookstore",
             period: "Mar 2024 – May 2024",
             tech: ["Python", "Django", "Bootstrap", "HTMX"],
             description: "Interactive online bookstore with modern UI/UX. Features user management, shopping cart, REST API, dynamic components, and responsive design.",
-            type: "personal"
+            type: "personal",
+            screenshot:'maktabati.png'
         },
         {
             title: "Stock Management Web Application",
             period: "Dec 2022 – Jan 2023",
             tech: ["Python", "Django", "Bootstrap"],
             description: "Complete inventory management system with dashboard analytics, reporting features, product tracking, invoice generation, and PDF export capabilities.",
-            type: "personal"
+            type: "personal",
+            screenshot:'Stock.png'
         }
     ];
 
@@ -108,7 +130,7 @@ export default function Home() {
                                 <button
                                     key={item}
                                     onClick={() => scrollToSection(item.toLowerCase())}
-                                    className={`text-gray-700 hover:text-indigo-600 transition-colors duration-300 ${activeSection === item.toLowerCase() ? 'text-indigo-600 font-semibold' : ''}`}
+                                    className={`text-white-700 hover:text-indigo-600 transition-colors duration-300 ${activeSection === item.toLowerCase() ? 'text-indigo-600 font-semibold' : ''}`}
                                 >
                                     {item}
                                 </button>
@@ -143,7 +165,7 @@ export default function Home() {
                             View My Work
                         </button>
                         <div className="flex space-x-4">
-                            <a href="mailto:bouchamadjad@gmail.com" className="text-white hover:text-gray-200 transition-colors">
+                            <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#98;&#111;&#117;&#99;&#104;&#97;&#109;&#97;&#100;&#106;&#97;&#100;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;" className="text-white hover:text-gray-200 transition-colors">
                                 <i className="fab fa-solid fa-envelope text-2xl"></i>
                             </a>
                             <a href="https://linkedin.com/in/bouchama-djad-924148263/" className="text-white hover:text-gray-200 transition-colors">
@@ -183,7 +205,7 @@ export default function Home() {
                                 </div>
                                 <div className="col-span-2">
                                     <i className="fas fa-map-marker-alt text-indigo-600 mr-2"></i>
-                                    38 rue de Birkhaddem, Bachdjerrah, Alger
+                                    Alger
                                 </div>
                             </div>
                         </div>
@@ -288,17 +310,25 @@ export default function Home() {
                                 <div className="h-48 bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
                                     <div className="text-white text-center">
                                         <i className="fas fa-code text-4xl mb-2"></i>
-                                        <p className="text-sm opacity-80">Project Screenshot</p>
+                                        <div className="relative aspect-square w-24 h-40 sm:w-32 sm:h-48 md:w-40 md:h-56 mx-auto">
+                                            <Image
+                                                src={`/${project.screenshot}`}
+                                                alt="capture d'écran du projet"
+                                                fill
+                                                style={{ objectFit: 'contain' }}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="p-6">
                                     <div className="flex justify-between items-start mb-2">
-                                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                            project.type === 'academic' ? 'bg-blue-100 text-blue-800' :
-                                            project.type === 'internship' ? 'bg-green-100 text-green-800' :
-                                            'bg-purple-100 text-purple-800'
-                                        }`}>
-                                            {project.type}
+                                        <span className="inline-flex justify-between items-start mb-2">
+                                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${getProjectTypeColor(project.type)}`}> {project.type}</span>
+                                            {project.tags && project.tags.map(
+                                                (tag,index) => (
+                                                    <span key={index} className={`px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800`}> {tag} </span>
+                                                )
+                                            )}
                                         </span>
                                         <span className="text-xs text-gray-500">{project.period}</span>
                                     </div>
